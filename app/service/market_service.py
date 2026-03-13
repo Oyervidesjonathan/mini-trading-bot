@@ -1,8 +1,8 @@
 import random
 
-def get_price(symbo: str) -> float:
+def get_price(symbol: str) -> float:
     base_prices = {
-        "APPL": 180,
+        "AAPL": 180,
         "TSLA": 250,
         "NVDA": 900,
         "MSFT": 420
