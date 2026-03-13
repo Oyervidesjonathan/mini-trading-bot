@@ -1,6 +1,6 @@
-from fastapi import FASTAPI
+from fastapi import FastAPI
 
-app = FASTAPI(title="Mini Trading Bot")
+app = FastAPI(title="Mini Trading Bot")
 
 @app.get("/")
 def root():
