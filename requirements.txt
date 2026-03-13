@@ -1,0 +1,5 @@
+fastapi
+uvicron
+psycopg[binary]
+python-dotenv
+requests
