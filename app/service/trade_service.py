@@ -1,10 +1,15 @@
 from datetime import datetime
+from app.service.market_service import get_price
+from app.db.db import get_connection
 
-def execute_trade():
+
+def execute_trade(symbol: str, quantity: int):
+
+
     trade = {
         "symbol": symbol.upper(),
         "quantinty": quantity,
-        "price" price,
+        "price": price,
         "timestamp": datetime.utcnow().isoformat(),
         "status": "executed"
 
