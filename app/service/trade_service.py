@@ -12,25 +12,25 @@ def execute_trade(symbol: str, quantity: int):
 
     cursor.execute(
         """
-        INSERT INTO trades (symbol, quantity, price, timestamp)
-        VALUES(%s, %s, %s, %s)
+        INSERT INTO trades (symbol, quantity, price, timestamp, status)
+        VALUES(%s, %s, %s, %s, %s)
         RETURNING id
         """,
-        (symbol.upper(), quantity, price, datetime.utcnow())
+        (symbol.upper(), quantity, price, datetime.utcnow(), "EXECUTED")
     )
 
     trade_id = cursor.fetchone()[0]
 
-    con.commit()
+    conn.commit()
     cursor.close()
     conn.close()
 
     trade = {
         "symbol": symbol.upper(),
-        "quantinty": quantity,
+        "quantity": quantity,
         "price": price,
         "timestamp": datetime.utcnow().isoformat(),
-        "status": "executed"
+        "status": "EXECUTED"
 
     }
 
