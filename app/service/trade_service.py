@@ -4,7 +4,8 @@ from app.db.db import get_connection
 
 
 def execute_trade(symbol: str, quantity: int):
-
+    
+    price = get_price(symbol)
 
     trade = {
         "symbol": symbol.upper(),
