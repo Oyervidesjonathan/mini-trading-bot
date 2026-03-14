@@ -18,18 +18,21 @@ def get_trades():
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT symbol, quantity, price, timestamp, status FROM trades")
+
+
+    cursor.execute("SELECT * FROM trades ORDER BY id DESC")
 
     rows = cursor.fetchall()
 
     trades = []
 
     for row in rows:
-        trades.appened({
+        trades.append({
             "symbol": row[1],
             "quantity": row[2],
             "price": row[3],
-            "timestamp": row[4]
+            "timestamp": row[4],
+            "status": row[5]
         })
 
         cursor.close()
