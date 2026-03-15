@@ -6,6 +6,7 @@ from app.db.db import get_connection
 def execute_trade(symbol: str, quantity: int):
     
     price = get_price(symbol)
+    timestamp = datetime.utcnow()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -26,6 +27,7 @@ def execute_trade(symbol: str, quantity: int):
     conn.close()
 
     trade = {
+        "id": trade_id,
         "symbol": symbol.upper(),
         "quantity": quantity,
         "price": price,
