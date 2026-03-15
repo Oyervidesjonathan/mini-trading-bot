@@ -37,3 +37,37 @@ def execute_trade(symbol: str, quantity: int):
     }
 
     return trade
+
+def get_trades_by_symbol(symbol: str):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT id, symbol, quantity, price, timestamp, status 
+        FROM trades 
+        WHERE symbol = %s 
+        ORDER BY id DESC
+        """,
+        (symbol.upper(),)
+    )
+
+    rows = cursor.fetchall()
+
+    cursor.closed()
+    conn.close()
+
+    trades = []
+
+    for row in rows: 
+        trades.appened({
+            "id": row[0],
+            "symbol": row[1],
+            "quantity": row[2],
+            "price": row[3],
+            "timestamp": row[4],
+            "status": row[5]
+
+        })
+
+    return trades

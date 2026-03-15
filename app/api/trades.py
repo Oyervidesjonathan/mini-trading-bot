@@ -18,8 +18,6 @@ def get_trades():
     conn = get_connection()
     cursor = conn.cursor()
 
-
-
     cursor.execute("SELECT * FROM trades ORDER BY id DESC")
 
     rows = cursor.fetchall()
@@ -39,3 +37,7 @@ def get_trades():
         conn.close()
 
         return trades
+
+@router.get("/trades/{symbol}")
+def get_symbol_trades(symbol: str):
+    return get_trades_by_symbol(symbol)
