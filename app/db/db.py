@@ -17,7 +17,7 @@ def get_connection():
         Returns:
             psycopg.Connection: Acitve connection to the database
     """
-    return psycopg.connect(DATABASE_URL)
+    return psycopg.connect(DATABASE_URL, autocommit=False)
 
 def init_db():
     """
