@@ -5,8 +5,17 @@ import os
 from app.config import DATABASE_URL
 
 def get_connection():
-    database_url = os.getenv("DATABASE_URL")
+    return psycopg.connect(DATABASE_URL)
 
-    conn = psycopg.connect(DATABASE_URL)
+def init_db():
+    conn = get_connection()
+    cursor = conn.cursor()
 
-    return conn
+    with open("schema.sql", "r") as f:
+        schema = f.read()
+
+    cursor.execute(schema)
+
+    conn.commit()
+    cursor.close()
+    conn.close()
