@@ -71,3 +71,33 @@ def get_trades_by_symbol(symbol: str):
         })
 
     return trades
+
+def get_all_trades():
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT id, symbol, quantity, price, timestamp, status
+        FROM trades
+        ORDER BY id DESC
+        """
+    )
+
+    rows = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    for row in rows:
+        trades.append({
+            "id": row[0],
+            "symbol": row[1],
+            "quantity": row[2],
+            "price": row[3],
+            "timestamp": row[4],
+            "staus": row[5]
+        })
+
+    return trades

@@ -1,42 +1,18 @@
 
 from fastapi import APIRouter
-from app.service.trade_service import execute_trade
-from app.db.db import get_connection
+from app.service.trade_service import execute_trade, get_trades_by_symbol, get_all_trades
 
 router = APIRouter()
 
 @router.post("/trade/{symbol}")
 def trade(symbol: str, quantity: int):
     result = execute_trade(symbol, quantity)
-
     return result
 
 
 @router.get("/trades")
 def get_trades():
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM trades ORDER BY id DESC")
-
-    rows = cursor.fetchall()
-
-    trades = []
-
-    for row in rows:
-        trades.append({
-            "symbol": row[1],
-            "quantity": row[2],
-            "price": row[3],
-            "timestamp": row[4],
-            "status": row[5]
-        })
-
-        cursor.close()
-        conn.close()
-
-        return trades
+    return get_all_trades()
 
 @router.get("/trades/{symbol}")
 def get_symbol_trades(symbol: str):
