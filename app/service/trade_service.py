@@ -54,13 +54,13 @@ def get_trades_by_symbol(symbol: str):
 
     rows = cursor.fetchall()
 
-    cursor.closed()
+    cursor.close()
     conn.close()
 
     trades = []
 
     for row in rows: 
-        trades.appened({
+        trades.append({
             "id": row[0],
             "symbol": row[1],
             "quantity": row[2],
