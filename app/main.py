@@ -15,3 +15,7 @@ app.include_router(run.router)
 @app.get("/")
 def root():
     return {"message": "Mini Trading Bot API running"}
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
