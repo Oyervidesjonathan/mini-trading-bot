@@ -1,4 +1,5 @@
-
+-- Defines Schema for Mini Trading Bot
+-- Defines tables used to store executed trades
 CREATE TABLE IF NOT EXISTS trades (
     id SERIAL PRIMARY KEY,
     symbol VARCHAR(10) NOT NULL,
