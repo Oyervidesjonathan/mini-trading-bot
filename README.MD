@@ -26,12 +26,12 @@ This project demonstrates how a real-world trading backend is structured, includ
 ## 📸 Screenshots
 
 ### Swagger API Documentation
-![Swagger UI](./screenshots/swagger.png)
+![Swagger UI](screenshots/swagger.png)
 
 ---
 
 ### Trade Execution Example
-![Trade Example](./screenshots/example_trade.png)
+![Trade Example](screenshots/example_trade.png)
 
 ---
 
