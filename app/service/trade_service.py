@@ -1,9 +1,26 @@
+"""
+Trade Service Module
+
+Handles buisness logic for executing trades abd retrieving
+trade history from the database.
+"""
 from datetime import datetime
 from app.service.market_service import get_price
 from app.db.db import get_connection
 
 
 def execute_trade(symbol: str, quantity: int):
+    """
+    Execute a simulated trade and store it in the database.
+
+    Args:
+        symbol (str): Stock ticker symbol (e.g., APPL, TSLA).
+        quantity (int): Number of shares to trade.
+
+    Returns:
+        dict: Information about the executed trade including 
+        id, symbol, quantity, price, timestamp, and status.
+    """
     
     price = get_price(symbol)
     timestamp = datetime.utcnow()
@@ -39,6 +56,15 @@ def execute_trade(symbol: str, quantity: int):
     return trade
 
 def get_trades_by_symbol(symbol: str):
+    """
+    Retrive all trades associated witha specific stock symbol.
+
+    Args:
+        symbol (str): Stock ticker symbol used to filter trades.
+
+    Returns:
+        list[dict]: List of trades matching symbol,
+    """
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -73,6 +99,13 @@ def get_trades_by_symbol(symbol: str):
     return trades
 
 def get_all_trades():
+    """
+    Retrive all trades stored in the database.
+
+    Returns:
+        list[dict]: List of all executed trades ordered
+        from newest to oldest
+    """
 
     conn = get_connection()
     cursor = conn.cursor()
