@@ -1,6 +1,6 @@
 # 🚀 Mini Trading Bot API
 
-A backend trading simulation system built with **FastAPI**, **PostgreSQL**, and a clean **layered architecture**.
+A backend trading simulation system built with FastAPI and PostgreSQL that demonstrates real-world API design, service-layer architecture, and database integration.
 
 This project demonstrates how a real-world trading backend is structured, including:
 - API layer (FastAPI)
