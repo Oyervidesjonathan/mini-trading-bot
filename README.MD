@@ -39,8 +39,10 @@ This project demonstrates how a real-world trading backend is structured, includ
 
 ```mermaid
 flowchart TD
-    A[Client] --> B[API Layer (FastAPI)]
+    A[Client Request] --> B[FastAPI Router]
+
     B --> C[Strategy Service]
     B --> D[Trade Service]
-    C --> E[Market Service]
-    D --> F[Database (PostgreSQL)]
+
+    C --> E[Market Price Service]
+    D --> F[PostgreSQL Database]
