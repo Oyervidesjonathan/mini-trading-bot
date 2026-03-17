@@ -11,7 +11,7 @@ from app.service.strategy_service import evaluate_strategy
 
 router = APIRouter()
 
-@router.get("/strategy/{symbol}", summmary="Evaluate trading startegy")
+@router.get("/strategy/{symbol}", summary="Evaluate trading startegy")
 def run_startegy(symbol: str):
     """
     Evaluate the trading strategy for a given stock symbol.
