@@ -20,7 +20,7 @@ import {
   getTrades
 } from "../api/client";
 
-function Controls({ setOutput }) {
+function Controls({ setOutput, setLoading }) {
   const [symbol, setSymbol] = useState("AAPL");
   const [quantity, setQuantity] = useState(1);
 
@@ -31,6 +31,9 @@ function Controls({ setOutput }) {
     }
 
     try {
+      setLoading(true);
+      setOutput("⏳ Running...")
+
       const res = await fn();
       console.log("API RESPONSE:", res.data);
 
@@ -38,42 +41,56 @@ function Controls({ setOutput }) {
 
     } catch (err) {
       console.error(err);
-      setOutput("ERROR: " + err.message);
+      setOutput("❌ ERROR: " + err.message);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const btnStyle = {
+    padding: "8px 12px",
+    margin: "5px",
+    borderRadius: "6px",
+    border: "none",
+    background: "#333",
+    color: "fff",
+    cursor: "pointer"
   };
 
   return (
     <div>
       <input
+        style={{ padding: "6px", marginRight: "5px" }}
         placeholder="Symbol (AAPL)"
         value={symbol}
         onChange={(e) => setSymbol(e.target.value)}
       />
 
       <input
+        style={{ padding: "6px", width: "60px" }}
         type="number"
         value={quantity}
         onChange={(e) => setQuantity(e.target.value)}
       />
 
       <div>
-        <button onClick={() => handle(() => getPrice(symbol))}>
+        <button style={btnStyle} onClick={() => handle(() => getPrice(symbol))}>
           Get Price
         </button>
 
-        <button onClick={() => handle(() => runStrategy(symbol))}>
+        <button style={btnStyle} onClick={() => handle(() => runStrategy(symbol))}>
           Run Strategy
         </button>
 
-        <button onClick={() => handle(() => executeTrade(symbol, quantity))}>
+        <button style={btnStyle} onClick={() => handle(() => executeTrade(symbol, quantity))}>
           Execute Trade
         </button>
 
-        <button onClick={() => handle(() => runBot(symbol, quantity))}>
+        <button style={btnStyle} onClick={() => handle(() => runBot(symbol, quantity))}>
           Run Bot
         </button>
 
-        <button onClick={() => handle(() => getTrades())}>
+        <button style={btnStyle} onClick={() => handle(() => getTrades())}>
           Get Trades
         </button>
       </div>
