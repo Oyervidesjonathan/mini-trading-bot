@@ -1,3 +1,16 @@
+/**
+ * Controls component
+ * 
+ * This component handles all user interactions for the trading app.
+ * It collects user input (symbol + quantity) and triggers API calls
+ * through the client layer.
+ * 
+ * Responsibilities:
+ * - Mange local UI sate (symbol, quantity)
+ * - Trigger backend requests
+ * - Handle async responses + errors
+ * - Send formatted ouput back to parent component (app.jsx)
+ */
 import { useState } from "react"
 import {
   getPrice,
