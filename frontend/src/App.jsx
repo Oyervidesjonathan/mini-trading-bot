@@ -4,22 +4,30 @@ import Output from "./components/Output";
 
 function App() {
   const [output, setOutput] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
     <div style={{
-      padding: "30px",
-      maxWidth: "600px",
+      padding: "40px",
+      maxWidth: "700px",
       margin: "auto",
-      fontFamily: "monospace"
+      fontFamily: "monospace",
+      color: "#fff"
     }}>
-      <h1>🚀 Mini Trading Bot</h1>
+      <h1 style={{
+        textAlign: "center",
+        marginBottom: "30px"
+      }}>
+        🚀 Mini Trading Bot
 
-      <Controls setOutput={setOutput} />
+      </h1>
 
-      <h3>Output</h3>
-      <Output output={output} />
+      <Controls setOutput={setOutput} setLoading={setLoading} />
+
+      <h3 style={{ marginTop: "30px" }}>Output</h3>
+      <Output output={output} loading={loading} setOutput={setOutput} />
     </div>
-  )
+  );
 }
 
 export default App;
