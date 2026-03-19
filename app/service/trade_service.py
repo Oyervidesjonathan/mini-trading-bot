@@ -110,6 +110,8 @@ def get_all_trades():
     conn = get_connection()
     cursor = conn.cursor()
 
+    trades = []
+
     cursor.execute(
         """
         SELECT id, symbol, quantity, price, timestamp, status
@@ -130,7 +132,7 @@ def get_all_trades():
             "quantity": row[2],
             "price": row[3],
             "timestamp": row[4],
-            "staus": row[5]
+            "status": row[5]
         })
 
     return trades

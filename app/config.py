@@ -10,4 +10,4 @@ import os
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = "postgresql://postgres:Polo123?@localhost:5432/mini_trading_bot"
