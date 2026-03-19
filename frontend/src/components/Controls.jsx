@@ -8,15 +8,24 @@ import {
 } from "../api/client";
 
 function Controls({ setOutput }) {
-  const [symbol, setSymbol] = useState("");
+  const [symbol, setSymbol] = useState("AAPL");
   const [quantity, setQuantity] = useState(1);
 
   const handle = async (fn) => {
+    if (!symbol) {
+      setOutput("⚠️ Enter a symbol (AAPL, TSLA, etc)");
+      return;
+    }
+
     try {
       const res = await fn();
-      setOutput(JSON.stringfy(res.data, null, 2));
+      console.log("API RESPONSE:", res.data);
+
+      setOutput(JSON.stringify(res.data, null, 2)); // 👈 REAL OUTPUT
+
     } catch (err) {
-      setOutput(err.message);
+      console.error(err);
+      setOutput("ERROR: " + err.message);
     }
   };
 
@@ -51,7 +60,7 @@ function Controls({ setOutput }) {
           Run Bot
         </button>
 
-        <button onClick={() => handle(getTrades)}>
+        <button onClick={() => handle(() => getTrades())}>
           Get Trades
         </button>
       </div>

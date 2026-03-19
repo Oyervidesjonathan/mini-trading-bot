@@ -6,7 +6,7 @@ export const getPrice = (symbol) =>
     axios.get(`${API}/prices/${symbol}`);
 
 export const runStrategy = (symbol) =>
-    axios.get(`${API}/startegy/${symbol}`);
+    axios.get(`${API}/strategy/${symbol}`);
 
 export const executeTrade = (symbol, quantity) =>
     axios.post(`${API}/trade/${symbol}?quantity=${quantity}`);

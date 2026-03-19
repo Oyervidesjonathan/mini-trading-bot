@@ -14,7 +14,7 @@ function App() {
     }}>
       <h1>🚀 Mini Trading Bot</h1>
 
-      <Controls setOutput={output} />
+      <Controls setOutput={setOutput} />
 
       <h3>Output</h3>
       <Output output={output} />
