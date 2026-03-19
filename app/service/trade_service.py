@@ -1,9 +1,16 @@
 """
 Trade Service Module
 
-Handles buisness logic for executing trades abd retrieving
-trade history from the database.
+This module contains the core business logic for:
+- Executing trades
+- Fetching trade history
+
+It acts as the service layer between:
+API routes (controllers) → Database
+
+This separation keeps the application modular, testable, and scalable.
 """
+
 from datetime import datetime
 from app.service.market_service import get_price
 from app.db.db import get_connection
@@ -11,68 +18,78 @@ from app.db.db import get_connection
 
 def execute_trade(symbol: str, quantity: int):
     """
-    Execute a simulated trade and store it in the database.
+    Execute a simulated trade and persist it to the database.
+
+    Workflow:
+    1. Fetch current market price from market service
+    2. Insert trade record into database
+    3. Return structured trade response
 
     Args:
-        symbol (str): Stock ticker symbol (e.g., APPL, TSLA).
-        quantity (int): Number of shares to trade.
+        symbol (str): Stock ticker (e.g., AAPL, TSLA)
+        quantity (int): Number of shares
 
     Returns:
-        dict: Information about the executed trade including 
-        id, symbol, quantity, price, timestamp, and status.
+        dict: Executed trade details
     """
-    
-    price = get_price(symbol)
-    timestamp = datetime.utcnow()
 
+    # Step 1: Get current price from market service
+    price = get_price(symbol)
+
+    # Step 2: Establish database connection
     conn = get_connection()
     cursor = conn.cursor()
 
+    # Step 3: Insert trade into database
     cursor.execute(
         """
         INSERT INTO trades (symbol, quantity, price, timestamp, status)
-        VALUES(%s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s)
         RETURNING id
         """,
         (symbol.upper(), quantity, price, datetime.utcnow(), "EXECUTED")
     )
 
+    # Retrieve generated trade ID
     trade_id = cursor.fetchone()[0]
 
+    # Commit transaction
     conn.commit()
+
+    # Clean up resources
     cursor.close()
     conn.close()
 
-    trade = {
+    # Step 4: Return structured response
+    return {
         "id": trade_id,
         "symbol": symbol.upper(),
         "quantity": quantity,
         "price": price,
         "timestamp": datetime.utcnow().isoformat(),
         "status": "EXECUTED"
-
     }
 
-    return trade
 
 def get_trades_by_symbol(symbol: str):
     """
-    Retrive all trades associated witha specific stock symbol.
+    Retrieve all trades for a specific stock symbol.
 
     Args:
-        symbol (str): Stock ticker symbol used to filter trades.
+        symbol (str): Stock ticker
 
     Returns:
-        list[dict]: List of trades matching symbol,
+        list[dict]: Trades filtered by symbol (newest first)
     """
+
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute(
         """
-        SELECT id, symbol, quantity, price, timestamp, status 
-        FROM trades 
-        WHERE symbol = %s 
+        SELECT id, symbol, quantity, price, timestamp, status
+        FROM trades
+        WHERE symbol = %s
         ORDER BY id DESC
         """,
         (symbol.upper(),)
@@ -83,34 +100,32 @@ def get_trades_by_symbol(symbol: str):
     cursor.close()
     conn.close()
 
-    trades = []
-
-    for row in rows: 
-        trades.append({
+    # Transform raw DB rows → structured JSON response
+    trades = [
+        {
             "id": row[0],
             "symbol": row[1],
             "quantity": row[2],
             "price": row[3],
             "timestamp": row[4],
             "status": row[5]
-
-        })
+        }
+        for row in rows
+    ]
 
     return trades
 
+
 def get_all_trades():
     """
-    Retrive all trades stored in the database.
+    Retrieve all trades stored in the database.
 
     Returns:
-        list[dict]: List of all executed trades ordered
-        from newest to oldest
+        list[dict]: All trades ordered by most recent first
     """
 
     conn = get_connection()
     cursor = conn.cursor()
-
-    trades = []
 
     cursor.execute(
         """
@@ -125,14 +140,17 @@ def get_all_trades():
     cursor.close()
     conn.close()
 
-    for row in rows:
-        trades.append({
+    # Convert DB rows into JSON-friendly dictionaries
+    trades = [
+        {
             "id": row[0],
             "symbol": row[1],
             "quantity": row[2],
             "price": row[3],
             "timestamp": row[4],
             "status": row[5]
-        })
+        }
+        for row in rows
+    ]
 
     return trades
