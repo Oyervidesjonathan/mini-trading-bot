@@ -52,9 +52,10 @@ function Controls({ setOutput, setLoading }) {
     margin: "5px",
     borderRadius: "6px",
     border: "none",
-    background: "#333",
+    background: "#222",
     color: "fff",
-    cursor: "pointer"
+    cursor: "pointer",
+    transition: "all 0.2s ease",
   };
 
   return (
@@ -74,23 +75,48 @@ function Controls({ setOutput, setLoading }) {
       />
 
       <div>
-        <button style={btnStyle} onClick={() => handle(() => getPrice(symbol))}>
+        <button style={btnStyle}
+          onMouseEnter={(e) => e.target.style.background = "#444"}
+          onMouseLeave={(e) => e.target.style.background = "#222"}
+          onMouseDown={(e) => e.target.style.transform = "scale(0.95)"}
+          onMouseUp={(e) => e.target.style.transform = "scale(1)"}
+          onClick={() => handle(() => getPrice(symbol))}>
           Get Price
         </button>
 
-        <button style={btnStyle} onClick={() => handle(() => runStrategy(symbol))}>
+        <button style={btnStyle}
+          onMouseEnter={(e) => e.target.style.background = "#444"}
+          onMouseLeave={(e) => e.target.style.background = "#222"}
+          onMouseDown={(e) => e.target.style.transform = "scale(0.95)"}
+          onMouseUp={(e) => e.target.style.transform = "scale(1)"}
+          onClick={() => handle(() => runStrategy(symbol))}>
           Run Strategy
         </button>
 
-        <button style={btnStyle} onClick={() => handle(() => executeTrade(symbol, quantity))}>
+        <button style={btnStyle}
+          onMouseEnter={(e) => e.target.style.background = "#444"}
+          onMouseLeave={(e) => e.target.style.background = "#222"}
+          onMouseDown={(e) => e.target.style.transform = "scale(0.95)"}
+          onMouseUp={(e) => e.target.style.transform = "scale(1)"}
+          onClick={() => handle(() => executeTrade(symbol, quantity))}>
           Execute Trade
         </button>
 
-        <button style={btnStyle} onClick={() => handle(() => runBot(symbol, quantity))}>
+        <button style={btnStyle}
+          onMouseEnter={(e) => e.target.style.background = "#444"}
+          onMouseLeave={(e) => e.target.style.background = "#222"}
+          onMouseDown={(e) => e.target.style.transform = "scale(0.95)"}
+          onMouseUp={(e) => e.target.style.transform = "scale(1)"}
+          onClick={() => handle(() => runBot(symbol, quantity))}>
           Run Bot
         </button>
 
-        <button style={btnStyle} onClick={() => handle(() => getTrades())}>
+        <button style={btnStyle}
+          onMouseEnter={(e) => e.target.style.background = "#444"}
+          onMouseLeave={(e) => e.target.style.background = "#222"}
+          onMouseDown={(e) => e.target.style.transform = "scale(0.95)"}
+          onMouseUp={(e) => e.target.style.transform = "scale(1)"}
+          onClick={() => handle(() => getTrades())}>
           Get Trades
         </button>
       </div>
