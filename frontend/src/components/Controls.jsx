@@ -6,12 +6,13 @@
  * through the client layer.
  * 
  * Responsibilities:
- * - Mange local UI sate (symbol, quantity)
+ * - Manage local UI state (symbol, quantity)
  * - Trigger backend requests
  * - Handle async responses + errors
- * - Send formatted ouput back to parent component (app.jsx)
+ * - Send formatted output back to parent component (App.jsx)
  */
-import { useState } from "react"
+
+import { useState } from "react";
 import {
   getPrice,
   runStrategy,
@@ -33,12 +34,12 @@ function Controls({ setOutput, setLoading }) {
     try {
       setLoading(true);
       document.body.style.cursor = "wait";
-      setOutput("⏳ Running...")
+      setOutput("⏳ Running...");
 
       const res = await fn();
       console.log("API RESPONSE:", res.data);
 
-      setOutput(JSON.stringify(res.data, null, 2)); // 👈 REAL OUTPUT
+      setOutput(JSON.stringify(res.data, null, 2));
 
     } catch (err) {
       console.error(err);
@@ -49,88 +50,55 @@ function Controls({ setOutput, setLoading }) {
     }
   };
 
-  const btnStyle = {
-    padding: "8px 12px",
-    margin: "5px",
-    borderRadius: "6px",
-    border: "none",
-    background: "#222",
-    color: "#fff",
-    cursor: "pointer",
-    transition: "all 0.2s ease",
-  };
-
   return (
     <div style={{ textAlign: "center" }}>
 
+      {/* INPUTS */}
       <div style={{ marginBottom: "10px" }}>
         <input
-          style={{ padding: "6px", marginRight: "5px" }}
+          className="input"
           placeholder="Symbol (AAPL)"
           value={symbol}
           onChange={(e) => setSymbol(e.target.value)}
         />
 
         <input
-          style={{ padding: "6px", width: "60px" }}
+          className="input"
           type="number"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
         />
       </div>
 
+      {/* BUTTONS */}
       <div style={{
         marginTop: "15px",
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "center"
       }}>
-        <button style={btnStyle}
-          onMouseEnter={(e) => e.target.style.background = "#444"}
-          onMouseLeave={(e) => e.target.style.background = "#222"}
-          onMouseDown={(e) => e.target.style.transform = "scale(0.95)"}
-          onMouseUp={(e) => e.target.style.transform = "scale(1)"}
-          onClick={() => handle(() => getPrice(symbol))}>
+        <button className="btn" onClick={() => handle(() => getPrice(symbol))}>
           Get Price
         </button>
 
-        <button style={btnStyle}
-          onMouseEnter={(e) => e.target.style.background = "#444"}
-          onMouseLeave={(e) => e.target.style.background = "#222"}
-          onMouseDown={(e) => e.target.style.transform = "scale(0.95)"}
-          onMouseUp={(e) => e.target.style.transform = "scale(1)"}
-          onClick={() => handle(() => runStrategy(symbol))}>
+        <button className="btn" onClick={() => handle(() => runStrategy(symbol))}>
           Run Strategy
         </button>
 
-        <button style={btnStyle}
-          onMouseEnter={(e) => e.target.style.background = "#444"}
-          onMouseLeave={(e) => e.target.style.background = "#222"}
-          onMouseDown={(e) => e.target.style.transform = "scale(0.95)"}
-          onMouseUp={(e) => e.target.style.transform = "scale(1)"}
-          onClick={() => handle(() => executeTrade(symbol, quantity))}>
+        <button className="btn" onClick={() => handle(() => executeTrade(symbol, quantity))}>
           Execute Trade
         </button>
 
-        <button style={btnStyle}
-          onMouseEnter={(e) => e.target.style.background = "#444"}
-          onMouseLeave={(e) => e.target.style.background = "#222"}
-          onMouseDown={(e) => e.target.style.transform = "scale(0.95)"}
-          onMouseUp={(e) => e.target.style.transform = "scale(1)"}
-          onClick={() => handle(() => runBot(symbol, quantity))}>
+        <button className="btn" onClick={() => handle(() => runBot(symbol, quantity))}>
           Run Bot
         </button>
 
-        <button style={btnStyle}
-          onMouseEnter={(e) => e.target.style.background = "#444"}
-          onMouseLeave={(e) => e.target.style.background = "#222"}
-          onMouseDown={(e) => e.target.style.transform = "scale(0.95)"}
-          onMouseUp={(e) => e.target.style.transform = "scale(1)"}
-          onClick={() => handle(() => getTrades())}>
+        <button className="btn" onClick={() => handle(() => getTrades())}>
           Get Trades
         </button>
       </div>
     </div>
-  )
+  );
 }
+
 export default Controls;

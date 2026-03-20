@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 
 function Output({ output, setOutput }) {
@@ -16,31 +15,23 @@ function Output({ output, setOutput }) {
     return "#00ff88";
   };
 
-
   return (
-    <div>
-      <button onClick={() => setOutput("")}>
+    <div style={{ marginTop: "20px", textAlign: "center" }}>
+
+      {/* CLEAR BUTTON */}
+      <button className="btn" onClick={() => setOutput("")}>
         Clear Output
       </button>
 
+      {/* OUTPUT BOX */}
       <pre
         ref={ref}
-        style={{
-          background: "#111",
-          color: getColor(),
-          padding: "15px",
-          borderRadius: "10px",
-          minHeight: "200px",
-          maxHeight: "300px",
-          overflow: "auto",
-          boxShadow: "0 0 10px rgba(0,0,0,0.5)"
-        }}
-
+        className="output-box"
+        style={{ color: getColor(), marginTop: "15px" }}
       >
         {output}
       </pre>
     </div>
-
   );
 }
 
