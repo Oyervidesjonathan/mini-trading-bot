@@ -59,22 +59,30 @@ function Controls({ setOutput, setLoading }) {
   };
 
   return (
-    <div>
-      <input
-        style={{ padding: "6px", marginRight: "5px" }}
-        placeholder="Symbol (AAPL)"
-        value={symbol}
-        onChange={(e) => setSymbol(e.target.value)}
-      />
+    <div style={{ textAlign: "center" }}>
 
-      <input
-        style={{ padding: "6px", width: "60px" }}
-        type="number"
-        value={quantity}
-        onChange={(e) => setQuantity(e.target.value)}
-      />
+      <div style={{ marginBottom: "10px" }}>
+        <input
+          style={{ padding: "6px", marginRight: "5px" }}
+          placeholder="Symbol (AAPL)"
+          value={symbol}
+          onChange={(e) => setSymbol(e.target.value)}
+        />
 
-      <div>
+        <input
+          style={{ padding: "6px", width: "60px" }}
+          type="number"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+        />
+      </div>
+
+      <div style={{
+        marginTop: "15px",
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center"
+      }}>
         <button style={btnStyle}
           onMouseEnter={(e) => e.target.style.background = "#444"}
           onMouseLeave={(e) => e.target.style.background = "#222"}
