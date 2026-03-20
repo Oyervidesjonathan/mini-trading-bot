@@ -8,15 +8,18 @@ function App() {
 
   return (
     <div style={{
-      padding: "40px",
-      maxWidth: "700px",
+      padding: "50px 20px",
+      maxWidth: "750px",
       margin: "auto",
       fontFamily: "monospace",
-      color: "#fff"
+      color: "#fff",
+      textAlign: "center"
     }}>
       <h1 style={{
+        fontSize: "32px",
         textAlign: "center",
-        marginBottom: "30px"
+        marginBottom: "30px",
+        textShadow: "0 0 10px rgba(0,255,150,0.4)"
       }}>
         🚀 Mini Trading Bot
 
