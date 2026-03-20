@@ -18,7 +18,6 @@ function App() {
       <h1 style={{
         fontSize: "32px",
         textAlign: "center",
-        marginBottom: "30px",
         textShadow: "0 0 10px rgba(0,255,150,0.4)"
       }}>
         🚀 Mini Trading Bot

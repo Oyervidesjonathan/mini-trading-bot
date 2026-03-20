@@ -32,6 +32,7 @@ function Controls({ setOutput, setLoading }) {
 
     try {
       setLoading(true);
+      document.body.style.cursor = "wait";
       setOutput("⏳ Running...")
 
       const res = await fn();
@@ -44,6 +45,7 @@ function Controls({ setOutput, setLoading }) {
       setOutput("❌ ERROR: " + err.message);
     } finally {
       setLoading(false);
+      document.body.style.cursor = "default";
     }
   };
 
@@ -53,7 +55,7 @@ function Controls({ setOutput, setLoading }) {
     borderRadius: "6px",
     border: "none",
     background: "#222",
-    color: "fff",
+    color: "#fff",
     cursor: "pointer",
     transition: "all 0.2s ease",
   };
