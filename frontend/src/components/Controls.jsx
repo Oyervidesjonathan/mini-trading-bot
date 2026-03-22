@@ -25,25 +25,94 @@ function Controls({ setOutput, setLoading }) {
   const [symbol, setSymbol] = useState("AAPL");
   const [quantity, setQuantity] = useState(1);
 
-  const handle = async (fn) => {
-    if (!symbol) {
-      setOutput("⚠️ Enter a symbol (AAPL, TSLA, etc)");
+  /**
+   * formatLog
+   * ---------
+   * Converts API responses into structured, readable log messages.
+   * Replaces raw JSON output and improves user experience.
+   */
+  const formatLog = (type, data) => {
+    const time = new Date().toLocaleTimeString();
+
+    switch (type) {
+      case "price":
+        return `[${time}] PRICE FETCHED
+Symbol: ${data.symbol}
+Price: $${Number(data.price).toFixed(2)}
+Status: SUCCESS\n\n`;
+
+      case "trade":
+        return `[${time}] TRADE EXECUTED   //
+Symbol: ${data.symbol}
+Qty: ${data.qty || quantity}
+Price: $${Number(data.price || 0).toFixed(2)}  
+Status: SUCCESS\n\n`;
+
+      case "strategy":
+        return `[${time}] STRATEGY RESULT
+Symbol: ${data.symbol}
+Signal: ${data.signal || "N/A"}
+Status: COMPLETE\n\n`;
+
+      case "trades":
+        return `[${time}] TRADE HISTORY LOADED
+Total Trades: ${data.length || 0}
+Status: SUCCESS\n\n`;
+
+      case "error":
+        return `[${time}] ERROR
+Message: ${data}\n\n`;
+
+      default:
+        return `[${time}] ${JSON.stringify(data, null, 2)}\n\n`;
+    }
+  };
+
+  /**
+   * handle
+   * ------
+   * Generic async handler for all API calls.
+   * 
+   * Accepts:
+   * - fn: API function to execute
+   * - type: determines how output is formatted
+   * 
+   * Uses explicit validation rules instead of hardcoded exceptions.
+   */
+  const handle = async (fn, type) => {
+    const requiresSymbol = ["price", "strategy", "trade", "bot"].includes(type);
+    const requiresQuantity = ["trade", "bot"].includes(type);
+
+    if (requiresSymbol && !symbol.trim()) {
+      setOutput(prev => prev + formatLog("error", "Enter a valid symbol"));
+      return;
+    }
+
+    if (requiresQuantity && Number(quantity) <= 0) {
+      setOutput(prev => prev + formatLog("error", "Enter a valid quantity"));
       return;
     }
 
     try {
       setLoading(true);
       document.body.style.cursor = "wait";
-      setOutput("⏳ Running...");
+
+
+      setOutput(prev =>
+        prev + `[${new Date().toLocaleTimeString()}] Running...\n\n`
+      );
 
       const res = await fn();
       console.log("API RESPONSE:", res.data);
 
-      setOutput(JSON.stringify(res.data, null, 2));
+
+      setOutput(prev => prev + formatLog(type, res.data));
 
     } catch (err) {
       console.error(err);
-      setOutput("❌ ERROR: " + err.message);
+
+
+      setOutput(prev => prev + formatLog("error", err.message));
     } finally {
       setLoading(false);
       document.body.style.cursor = "default";
@@ -77,23 +146,24 @@ function Controls({ setOutput, setLoading }) {
         flexWrap: "wrap",
         justifyContent: "center"
       }}>
-        <button className="btn" onClick={() => handle(() => getPrice(symbol))}>
+        {/*Added type parameter to each action */}
+        <button className="btn" onClick={() => handle(() => getPrice(symbol), "price")}>
           Get Price
         </button>
 
-        <button className="btn" onClick={() => handle(() => runStrategy(symbol))}>
+        <button className="btn" onClick={() => handle(() => runStrategy(symbol), "strategy")}>
           Run Strategy
         </button>
 
-        <button className="btn" onClick={() => handle(() => executeTrade(symbol, quantity))}>
+        <button className="btn" onClick={() => handle(() => executeTrade(symbol, quantity), "trade")}>
           Execute Trade
         </button>
 
-        <button className="btn" onClick={() => handle(() => runBot(symbol, quantity))}>
+        <button className="btn" onClick={() => handle(() => runBot(symbol, quantity), "bot")}>
           Run Bot
         </button>
 
-        <button className="btn" onClick={() => handle(() => getTrades())}>
+        <button className="btn" onClick={() => handle(() => getTrades(), "trades")}>
           Get Trades
         </button>
       </div>
