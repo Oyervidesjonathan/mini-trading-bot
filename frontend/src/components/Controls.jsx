@@ -37,12 +37,14 @@ function Controls({ setOutput, setLoading }) {
     switch (type) {
       case "price":
         return `[${time}] PRICE FETCHED
+---------------------------       
 Symbol: ${data.symbol}
 Price: $${Number(data.price).toFixed(2)}
 Status: SUCCESS\n\n`;
 
       case "trade":
-        return `[${time}] TRADE EXECUTED   //
+        return `[${time}] TRADE EXECUTED
+---------------------------         
 Symbol: ${data.symbol}
 Qty: ${data.qty || quantity}
 Price: $${Number(data.price || 0).toFixed(2)}  
@@ -50,17 +52,20 @@ Status: SUCCESS\n\n`;
 
       case "strategy":
         return `[${time}] STRATEGY RESULT
+---------------------------- 
 Symbol: ${data.symbol}
 Signal: ${data.signal || "N/A"}
 Status: COMPLETE\n\n`;
 
       case "trades":
         return `[${time}] TRADE HISTORY LOADED
+--------------------------- 
 Total Trades: ${data.length || 0}
 Status: SUCCESS\n\n`;
 
       case "error":
         return `[${time}] ERROR
+---------------------------  
 Message: ${data}\n\n`;
 
       default:

@@ -8,7 +8,7 @@ import { useEffect, useRef } from "react";
  * color-coding based on message content.
  * 
  * Props:
- * - output (string): Current output/log  text to display
+ * - output (string): Current output/log text to display
  * - setOutput (function): State setter used to clear output
  */
 
@@ -18,10 +18,9 @@ function Output({ output, setOutput }) {
   /**
    * Auto-scroll effect
    * ------------------
-   * Ensures the ouput box always scrolls to the latest message
-   * wheneve new ouput is recived.
+   * Ensures the output box always scrolls to the latest message
+   * whenever new output is received.
    */
-
   useEffect(() => {
     if (ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight;
@@ -35,7 +34,6 @@ function Output({ output, setOutput }) {
    * - Orange: Running / processing state
    * - Green: Normal / success output
    */
-
   const getColor = () => {
     if (output.includes("ERROR")) return "#ff4444";
     if (output.includes("Running")) return "#ffaa00";
@@ -51,16 +49,31 @@ function Output({ output, setOutput }) {
       </button>
 
       {/*
-       * Output Display
-       * --------------
-       * - Uses <pre> to preserve formatting (JSON/LOG structure)
-       * - Auto-scrolls to latest entry
-       * - Dynamically styled based on system state
-       */}
+        Output Display
+        --------------
+        - Uses <pre> to preserve formatting (logs)
+        - Auto-scrolls to latest entry
+        - Styled to resemble terminal UI
+      */}
       <pre
         ref={ref}
         className="output-box"
-        style={{ color: getColor(), marginTop: "15px" }}
+        style={{
+          color: getColor(),
+          marginTop: "15px",
+          background: "#020d0a",
+          padding: "15px",
+          borderRadius: "10px",
+          minHeight: "200px",
+          maxHeight: "300px",
+          overflow: "auto",
+          fontSize: "13px",
+          lineHeight: "1.6",
+          textAlign: "left",
+          fontFamily: "'Share Tech Mono', monospace",
+          border: "1px solid rgba(0,255,150,0.2)",
+          boxShadow: "0 0 15px rgba(0,255,150,0.2)"
+        }}
       >
         {output}
       </pre>
