@@ -1,3 +1,6 @@
+/* ===============================
+   Counter Component
+================================ */
 .counter {
   font-size: 16px;
   padding: 5px 10px;
@@ -8,15 +11,21 @@
   transition: border-color 0.3s;
   margin-bottom: 24px;
 
+  /* Hover: highlight border */
   &:hover {
     border-color: var(--accent-border);
   }
+
+  /* Accessibility: focus outline */
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 }
 
+/* ===============================
+   Hero Section (Visual Layering)
+================================ */
 .hero {
   position: relative;
 
@@ -27,17 +36,20 @@
     margin: 0 auto;
   }
 
+  /* Base background element */
   .base {
     width: 170px;
     position: relative;
     z-index: 0;
   }
 
+  /* Overlay elements */
   .framework,
   .vite {
     position: absolute;
   }
 
+  /* Foreground visual */
   .framework {
     z-index: 1;
     top: 34px;
@@ -46,6 +58,7 @@
       scale(1.4);
   }
 
+  /* Secondary visual */
   .vite {
     z-index: 0;
     top: 107px;
@@ -56,6 +69,9 @@
   }
 }
 
+/* ===============================
+   Center Layout Container
+================================ */
 #center {
   display: flex;
   flex-direction: column;
@@ -70,6 +86,9 @@
   }
 }
 
+/* ===============================
+   Next Steps Section (Panels)
+================================ */
 #next-steps {
   display: flex;
   border-top: 1px solid var(--border);
@@ -78,11 +97,13 @@
   & > div {
     flex: 1 1 0;
     padding: 32px;
+
     @media (max-width: 1024px) {
       padding: 24px 20px;
     }
   }
 
+  /* Icon styling */
   .icon {
     margin-bottom: 16px;
     width: 22px;
@@ -95,6 +116,7 @@
   }
 }
 
+/* Divider for docs section */
 #docs {
   border-right: 1px solid var(--border);
 
@@ -104,6 +126,9 @@
   }
 }
 
+/* ===============================
+   Links / Actions List
+================================ */
 #next-steps ul {
   list-style: none;
   padding: 0;
@@ -127,9 +152,11 @@
     text-decoration: none;
     transition: box-shadow 0.3s;
 
+    /* Hover: elevation effect */
     &:hover {
       box-shadow: var(--shadow);
     }
+
     .button-icon {
       height: 18px;
       width: 18px;
@@ -153,14 +180,19 @@
   }
 }
 
+/* Spacer for layout separation */
 #spacer {
   height: 88px;
   border-top: 1px solid var(--border);
+
   @media (max-width: 1024px) {
     height: 48px;
   }
 }
 
+/* ===============================
+   Tick Decorations (UI Detail)
+================================ */
 .ticks {
   position: relative;
   width: 100%;
@@ -173,10 +205,13 @@
     border: 5px solid transparent;
   }
 
+  /* Left tick */
   &::before {
     left: 0;
     border-left-color: var(--border);
   }
+
+  /* Right tick */
   &::after {
     right: 0;
     border-right-color: var(--border);
