@@ -34,38 +34,50 @@ function Controls({ setOutput, setLoading }) {
   const formatLog = (type, data) => {
     const time = new Date().toLocaleTimeString();
 
+    const divider = "---------------------------"; // ✅ keeps lines consistent
+
     switch (type) {
       case "price":
         return `[${time}] PRICE FETCHED
----------------------------       
+${divider}
 Symbol: ${data.symbol}
 Price: $${Number(data.price).toFixed(2)}
 Status: SUCCESS\n\n`;
 
       case "trade":
         return `[${time}] TRADE EXECUTED
----------------------------         
+${divider}
 Symbol: ${data.symbol}
 Qty: ${data.qty || quantity}
-Price: $${Number(data.price || 0).toFixed(2)}  
+Price: $${Number(data.price || 0).toFixed(2)}
 Status: SUCCESS\n\n`;
 
       case "strategy":
         return `[${time}] STRATEGY RESULT
----------------------------- 
+${divider}
 Symbol: ${data.symbol}
 Signal: ${data.signal || "N/A"}
 Status: COMPLETE\n\n`;
 
+      case "bot":
+        return `[${time}] Bot Execution
+---------------------------
+Symbol: ${data.symbol}
+Price: $${Number(data.price || 0).toFixed(2)}
+Decision: ${data.decision || "N/A"}
+Trade Executed: ${data.trade_executed ? " YES" : "NO"}
+${data.trade ? `Trade ID: ${data.trade.id}` : ""}
+Status: COMPLETE\n\n`;
+
       case "trades":
         return `[${time}] TRADE HISTORY LOADED
---------------------------- 
+${divider}
 Total Trades: ${data.length || 0}
 Status: SUCCESS\n\n`;
 
       case "error":
         return `[${time}] ERROR
----------------------------  
+${divider}
 Message: ${data}\n\n`;
 
       default:
@@ -102,21 +114,21 @@ Message: ${data}\n\n`;
       setLoading(true);
       document.body.style.cursor = "wait";
 
-
+      // Log system activity (do not overwrite previous logs)
       setOutput(prev =>
-        prev + `[${new Date().toLocaleTimeString()}] Running...\n\n`
+        prev + `[${new Date().toLocaleTimeString()}] RUNNING...\n\n`
       );
 
       const res = await fn();
       console.log("API RESPONSE:", res.data);
 
-
+      // Append formatted result
       setOutput(prev => prev + formatLog(type, res.data));
 
     } catch (err) {
       console.error(err);
 
-
+      // Append formatted error log
       setOutput(prev => prev + formatLog("error", err.message));
     } finally {
       setLoading(false);
@@ -151,7 +163,7 @@ Message: ${data}\n\n`;
         flexWrap: "wrap",
         justifyContent: "center"
       }}>
-        {/*Added type parameter to each action */}
+        {/* Each button passes a type to control formatting */}
         <button className="btn" onClick={() => handle(() => getPrice(symbol), "price")}>
           Get Price
         </button>
