@@ -55,3 +55,6 @@ export const runBot = (symbol, quantity) =>
  */
 export const getTrades = () =>
     axios.get(`${API}/trades`);
+
+export const getAccount = (userId) =>
+  axios.get(`/account/${userId}`);
