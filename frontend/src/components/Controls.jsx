@@ -1,4 +1,4 @@
-/**
+/*
  * Controls component
  * 
  * This component handles all user interactions for the trading app.
