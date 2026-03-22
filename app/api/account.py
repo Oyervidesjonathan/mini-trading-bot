@@ -28,7 +28,7 @@ def get_account(user_id: int):
         ORDER BY timestamp DESC
         LIMIT 1
         """,
-        (used_id)
+        (user_id)
     )
     last_trade = cursor.fetchone()
 
