@@ -57,4 +57,4 @@ export const getTrades = () =>
     axios.get(`${API}/trades`);
 
 export const getAccount = (userId) =>
-  axios.get(`/account/${userId}`);
+  axios.get(`${API}/account/${userId}`);

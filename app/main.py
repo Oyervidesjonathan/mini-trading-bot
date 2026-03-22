@@ -15,7 +15,7 @@ This acts as the central hub of the backend.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import prices, trades, run
+from app.api import prices, trades, run, account
 from app.db.db import init_db
 
 # Initialize FastAPI application
@@ -31,7 +31,12 @@ Without this, the browser would block requests due to cross-origin security poli
 """
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[
+        "http://localhost:3000",   # ✅ React
+        "http://127.0.0.1:3000",   # ✅ React alt
+        "http://localhost:5173",   # (optional)
+        "http://127.0.0.1:5173"    # (optional)
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -52,6 +57,7 @@ def startup():
 app.include_router(prices.router)
 app.include_router(trades.router)
 app.include_router(run.router)
+app.include_router(account.router)
 
 """
 Root Endpoint

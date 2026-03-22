@@ -1,48 +1,35 @@
 import { useEffect, useState } from "react";
 import { getAccount } from "../api/client";
 
-/**
- * AccountSummary Component
- * ------------------------
- * Displays portfolio data tied to a specific user.
- */
-
-function AccountSummary({ userId }) {
+function AccountSummary() {
   const [account, setAccount] = useState(null);
+
+  // 🔥 CHANGE THIS TO MATCH YOUR REAL USER ID
+  const userId = 7;
 
   useEffect(() => {
     const fetchAccount = async () => {
       try {
         const res = await getAccount(userId);
+        console.log("ACCOUNT RESPONSE:", res.data); // 👈 DEBUG
         setAccount(res.data);
       } catch (err) {
-        console.error("Account fetch failed:", err);
-
-        // fallback so UI doesn't crash
-        setAccount({
-          balance: 0,
-          positions: [],
-          last_trade: null
-        });
+        console.error("ACCOUNT ERROR:", err);
       }
     };
 
     fetchAccount();
-  }, [userId]);
+  }, []);
 
-  // Loading state
-  if (!account) {
-    return <p style={{ marginTop: "20px" }}>Loading account...</p>;
-  }
+  if (!account) return <p>Loading account...</p>;
 
-  // Safe defaults
   const positions = account.positions || [];
 
   return (
     <div className="account-summary">
       <h3>Account Summary</h3>
 
-      <p>Balance: ${account.balance ?? 0}</p>
+      <p>Balance: ${account.balance}</p>
 
       <div>
         <strong>Positions:</strong>
@@ -50,9 +37,7 @@ function AccountSummary({ userId }) {
           <p>None</p>
         ) : (
           positions.map((p, i) => (
-            <p key={i}>
-              {p[0]}: {p[1]} shares
-            </p>
+            <p key={i}>{p[0]}: {p[1]} shares</p>
           ))
         )}
       </div>
