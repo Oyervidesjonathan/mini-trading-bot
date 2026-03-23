@@ -47,10 +47,10 @@ This project focuses on practicing core backend concepts including:
 
 
 flowchart LR
-    A[Frontend UI] --> B[FastAPI API]
+    A[Frontend UI] --> B[FastAPI Router]
     B --> C[Strategy Service]
     B --> D[Trade Service]
-    B --> E[Account Service]
+    B --> E[Account Endpoint]
     C --> F[Market Price Service]
     D --> F
     D --> G[(PostgreSQL)]
