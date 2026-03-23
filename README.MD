@@ -24,11 +24,6 @@ This project focuses on practicing core backend concepts including:
 
 ## 📸 Screenshots
 
-### 🧠 Swagger API Documentation
-![Swagger UI](screenshots/swagger.png)
-
----
-
 ### 💻 Main Trading UI
 ![Main UI](screenshots/frontend_main.png)
 
@@ -39,20 +34,45 @@ This project focuses on practicing core backend concepts including:
 
 ---
 
+### 🧠 Swagger API Documentation
+![Swagger UI](screenshots/swagger.png)
+
+---
+
 ### 💰 Trade Execution Example
 ![Trade Example](screenshots/example_trade.png)
 
 ---
 ## 🏗️ Architecture Flow
 
-This diagram shows how requests move through the system from client → API → services → database.
 
-```mermaid
-flowchart TD
-    A[Client Request] --> B[FastAPI Router]
+    A[Frontend UI (React)]
+    B[FastAPI Router]
 
-    B --> C[Strategy Service]
-    B --> D[Trade Service]
+    C[Strategy Service]
+    D[Trade Service]
+    E[Market Price Service]
+    F[PostgreSQL Database]
 
-    C --> E[Market Price Service]
-    D --> F[PostgreSQL Database]
+    G[Account Endpoint]
+
+    %% Request flow
+    A -->|Run Bot / Execute Trade| B
+
+    %% Strategy path
+    B --> C
+    C --> E
+
+    %% Trade execution path
+    B --> D
+    D --> E
+    D --> F
+
+    %% Account summary path
+    A -->|Fetch Account| G
+    G --> F
+
+    %% Response back
+    F --> B
+    E --> B
+    B --> A
