@@ -48,34 +48,18 @@ This project focuses on practicing core backend concepts including:
 
 flowchart LR
 
-    %% Frontend
-    A[Frontend UI]
+A[Frontend UI] -->|Run Bot / Trade| B[FastAPI Router]
+A -->|Get Account| B
 
-    %% API Layer
-    B[FastAPI Router]
+B --> C[Strategy Service]
+B --> D[Trade Service]
 
-    %% Services
-    C[Strategy Service]
-    D[Trade Service]
-    E[Market Price Service]
+C --> E[Market Price Service]
+D --> E
+D --> F[(PostgreSQL)]
 
-    %% Data
-    F[(PostgreSQL)]
+B --> F
 
-    %% Flows
-    A -->|Run Bot / Trade| B
-    A -->|Get Account| B
-
-    B --> C
-    B --> D
-
-    C --> E
-    D --> E
-    D --> F
-
-    B --> F
-
-    %% Response
-    F --> B
-    E --> B
-    B --> A
+F --> B
+E --> B
+B --> A
