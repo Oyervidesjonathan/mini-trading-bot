@@ -24,18 +24,25 @@ This project focuses on practicing core backend concepts including:
 
 ## 📸 Screenshots
 
-### Swagger API Documentation
-
+### 🧠 Swagger API Documentation
 ![Swagger UI](screenshots/swagger.png)
 
 ---
 
-### Trade Execution Example
-
-![Trade Example](screenshots/example_trade.png)
+### 💻 Main Trading UI
+![Main UI](screenshots/frontend_main.png)
 
 ---
 
+### 📊 Account Summary Dashboard
+![Account Summary](screenshots/account_summary.png)
+
+---
+
+### 💰 Trade Execution Example
+![Trade Example](screenshots/example_trade.png)
+
+---
 ## 🏗️ Architecture Flow
 
 This diagram shows how requests move through the system from client → API → services → database.
