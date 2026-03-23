@@ -46,6 +46,8 @@ This project focuses on practicing core backend concepts including:
 ## 🏗️ Architecture Flow
 
 
+flowchart TD
+
     A[Frontend UI (React)]
     B[FastAPI Router]
 
