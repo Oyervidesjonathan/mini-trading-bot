@@ -46,35 +46,36 @@ This project focuses on practicing core backend concepts including:
 ## 🏗️ Architecture Flow
 
 
-flowchart TD
+flowchart LR
 
-    A[Frontend UI (React)]
+    %% Frontend
+    A[Frontend UI]
+
+    %% API Layer
     B[FastAPI Router]
 
+    %% Services
     C[Strategy Service]
     D[Trade Service]
     E[Market Price Service]
-    F[PostgreSQL Database]
 
-    G[Account Endpoint]
+    %% Data
+    F[(PostgreSQL)]
 
-    %% Request flow
-    A -->|Run Bot / Execute Trade| B
+    %% Flows
+    A -->|Run Bot / Trade| B
+    A -->|Get Account| B
 
-    %% Strategy path
     B --> C
-    C --> E
-
-    %% Trade execution path
     B --> D
+
+    C --> E
     D --> E
     D --> F
 
-    %% Account summary path
-    A -->|Fetch Account| G
-    G --> F
+    B --> F
 
-    %% Response back
+    %% Response
     F --> B
     E --> B
     B --> A
