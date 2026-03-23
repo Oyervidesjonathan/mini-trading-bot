@@ -1,33 +1,40 @@
 """
 Trade Service Module
 
-Handles:
-- Executing trades
-- Fetching trade history
+Handles buisness logic for executing trades abd retrieving
+trade history from the database.
 """
-
 from datetime import datetime
 from app.service.market_service import get_price
 from app.db.db import get_connection
 
 
-def execute_trade(symbol: str, quantity: int, user_id: int = 7):
+def execute_trade(symbol: str, quantity: int):
     """
-    Execute a simulated trade and persist it to the database.
-    """
+    Execute a simulated trade and store it in the database.
 
+    Args:
+        symbol (str): Stock ticker symbol (e.g., APPL, TSLA).
+        quantity (int): Number of shares to trade.
+
+    Returns:
+        dict: Information about the executed trade including 
+        id, symbol, quantity, price, timestamp, and status.
+    """
+    
     price = get_price(symbol)
+    timestamp = datetime.utcnow()
 
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute(
         """
-        INSERT INTO trades (user_id, symbol, quantity, price, side, timestamp)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        INSERT INTO trades (symbol, quantity, price, timestamp, status)
+        VALUES(%s, %s, %s, %s, %s)
         RETURNING id
         """,
-        (user_id, symbol.upper(), quantity, price, "BUY", datetime.utcnow())
+        (symbol.upper(), quantity, price, datetime.utcnow(), "EXECUTED")
     )
 
     trade_id = cursor.fetchone()[0]
@@ -36,25 +43,36 @@ def execute_trade(symbol: str, quantity: int, user_id: int = 7):
     cursor.close()
     conn.close()
 
-    return {
+    trade = {
         "id": trade_id,
         "symbol": symbol.upper(),
         "quantity": quantity,
         "price": price,
-        "side": "BUY",
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.utcnow().isoformat(),
+        "status": "EXECUTED"
+
     }
 
+    return trade
 
 def get_trades_by_symbol(symbol: str):
+    """
+    Retrive all trades associated witha specific stock symbol.
+
+    Args:
+        symbol (str): Stock ticker symbol used to filter trades.
+
+    Returns:
+        list[dict]: List of trades matching symbol,
+    """
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute(
         """
-        SELECT id, symbol, quantity, price, timestamp, side
-        FROM trades
-        WHERE symbol = %s
+        SELECT id, symbol, quantity, price, timestamp, status 
+        FROM trades 
+        WHERE symbol = %s 
         ORDER BY id DESC
         """,
         (symbol.upper(),)
@@ -65,26 +83,38 @@ def get_trades_by_symbol(symbol: str):
     cursor.close()
     conn.close()
 
-    return [
-        {
+    trades = []
+
+    for row in rows: 
+        trades.append({
             "id": row[0],
             "symbol": row[1],
             "quantity": row[2],
-            "price": float(row[3]),
+            "price": row[3],
             "timestamp": row[4],
-            "side": row[5]
-        }
-        for row in rows
-    ]
+            "status": row[5]
 
+        })
+
+    return trades
 
 def get_all_trades():
+    """
+    Retrive all trades stored in the database.
+
+    Returns:
+        list[dict]: List of all executed trades ordered
+        from newest to oldest
+    """
+
     conn = get_connection()
     cursor = conn.cursor()
 
+    trades = []
+
     cursor.execute(
         """
-        SELECT id, symbol, quantity, price, timestamp, side
+        SELECT id, symbol, quantity, price, timestamp, status
         FROM trades
         ORDER BY id DESC
         """
@@ -95,14 +125,14 @@ def get_all_trades():
     cursor.close()
     conn.close()
 
-    return [
-        {
+    for row in rows:
+        trades.append({
             "id": row[0],
             "symbol": row[1],
             "quantity": row[2],
-            "price": float(row[3]),
+            "price": row[3],
             "timestamp": row[4],
-            "side": row[5]
-        }
-        for row in rows
-    ]
+            "status": row[5]
+        })
+
+    return trades
