@@ -1,5 +1,5 @@
 -- ============================================
--- Mini Trading Bot - Database Schema
+-- Mini Trading Bot - Database Schema (PATCHED)
 -- ============================================
 
 -- USERS (authentication)
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- PORTFOLIOS (cash balance per user)
 CREATE TABLE IF NOT EXISTS portfolios (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     balance NUMERIC DEFAULT 10000,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -24,7 +24,10 @@ CREATE TABLE IF NOT EXISTS positions (
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     symbol TEXT NOT NULL,
     quantity INTEGER NOT NULL,
-    avg_price NUMERIC DEFAULT 0
+    avg_price NUMERIC DEFAULT 0,
+
+    -- prevents duplicate rows per symbol per user
+    UNIQUE(user_id, symbol)
 );
 
 -- TRADES (transaction history)
